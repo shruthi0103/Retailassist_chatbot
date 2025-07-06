@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Retail Assist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f7fa;
+      --text: #222;
+      --user-msg: #dcbfff;
+      --bot-msg: #fceefc;
+      --input-bg: white;
+      --border: #ccc;
+      --header-bg: linear-gradient(135deg, #dcbfff, #b49fcc);
+    }
+
+    .dark-mode {
+      --bg: #1e1f31;
+      --text: #e0e0e0;
+      --user-msg: #4a6fa1;
+      --bot-msg: #2f364b;
+      --input-bg: #2c2f4a;
+      --border: #444;
+      --header-bg: linear-gradient(135deg, #2e4da7, #1a274d);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e8e6ff, #fceefc, #f9f7f3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 0;
+      transition: background 0.3s ease;
+    }
+
+    .dark-mode body {
+      background: linear-gradient(135deg, #1e1f31, #232642, #10101a);
+    }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 38px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .dark-mode h1 {
+      color: #eaeaea;
+    }
+
+    .chat-wrapper {
+      width: 480px;
+      height: 650px;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--input-bg);
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .chat-header {
+      background: var(--header-bg);
+      color: white;
+      padding: 20px;
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+      position: relative;
+    }
+
+    .toggle-switch {
+      position: absolute;
+      right: 20px;
+      top: 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .toggle-switch label {
+      color: white;
+    }
+
+    .toggle-switch input {
+      width: 40px;
+      height: 20px;
+      appearance: none;
+      background: #ccc;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .toggle-switch input:checked {
+      background: #a388d0;
+    }
+
+    .toggle-switch input::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      top: 1px;
+      left: 1px;
+      transition: 0.3s;
+    }
+
+    .toggle-switch input:checked::before {
+      left: 21px;
+    }
+
+    .chat-container {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      background-color: var(--bg);
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      margin: 6px 0;
+      border-radius: 16px;
+      font-size: 15px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      color: var(--text);
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: var(--user-msg);
+      color: #333;
+      border-bottom-right-radius: 4px;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background-color: var(--bot-msg);
+      color: #333;
+      border-bottom-left-radius: 4px;
+    }
+
+    .dark-mode .user {
+      background-color: var(--user-msg);
+      color: #fff;
+    }
+
+    .dark-mode .bot {
+      background-color: var(--bot-msg);
+      color: var(--text);
+    }
+
+    .input-area {
+      display: flex;
+      padding: 14px;
+      background-color: var(--input-bg);
+      border-top: 1px solid var(--border);
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 16px;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      outline: none;
+      background-color: var(--input-bg);
+      color: var(--text);
+    }
+
+    button {
+      padding: 12px 20px;
+      margin-left: 10px;
+      background: linear-gradient(to right, #dcbfff, #b49fcc);
+      color: #333;
+      font-weight: 500;
+      border: none;
+      border-radius: 20px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #cba8ff, #a388d0);
+    }
+
+    .dark-mode button {
+      background: linear-gradient(to right, #3a4c75, #2c3450);
+      color: #fff;
+    }
+
+    .dark-mode button:hover {
+      background: linear-gradient(to right, #4d5f8f, #3d466a);
+    }
+  </style>
+</head>
+<body>
+  <h1>🛍️ Retail Assist</h1>
+  <div class="chat-wrapper">
+    <div class="chat-header">
+      🤖Chatbot
+      <div class="toggle-switch">
+        <label for="darkToggle">Mode</label>
+        <input type="checkbox" id="darkToggle" />
+      </div>
+    </div>
+    <div class="chat-container" id="chatbox"></div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Ask about a refund or a product..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  <script>
+    function appendMessage(text, sender) {
+      const chatbox = document.getElementById("chatbox");
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "message " + sender;
+      msgDiv.innerHTML = text;
+      chatbox.appendChild(msgDiv);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
+
+      appendMessage(message, "user");
+      input.value = "";
+      appendMessage("⏳ Typing...", "bot");
+
+      fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const chatbox = document.getElementById("chatbox");
+        chatbox.removeChild(chatbox.lastChild);
+        appendMessage(data.reply, "bot");
+      });
+    }
+
+    document.getElementById("userInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    window.onload = function() {
+      appendMessage("👋 Hi! I can help you with product information or refund requests.", "bot");
+
+      if (localStorage.getItem("darkMode") === "true") {
+        document.documentElement.classList.add("dark-mode");
+        document.getElementById("darkToggle").checked = true;
+      }
+    };
+
+    document.getElementById("darkToggle").addEventListener("change", function() {
+      const isDark = this.checked;
+      document.documentElement.classList.toggle("dark-mode", isDark);
+      localStorage.setItem("darkMode", isDark);
+    });
+  </script>
+</body>
+</html>
